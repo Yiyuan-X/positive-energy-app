@@ -175,7 +175,7 @@ function HomePage({
 
       {/* 🧬 加入社群 */}
       <section className="register">
-        <button onClick={() => setShowRegister(true)}>✉️ 加入能量社群</button>
+        <button onClick={() => setShowRegister(true)}>✉️ 加入能量社群领兑换码</button>
       </section>
 
       {showRegister && <RegisterForm onClose={() => setShowRegister(false)} />}

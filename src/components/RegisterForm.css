@@ -143,3 +143,20 @@
     padding: 10px 24px;
   }
 }
+.wechat-qr {
+  width: 140px;           /* 控制宽度 */
+  height: auto;           /* 高度自适应 */
+  border-radius: 12px;    /* 圆角 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 阴影 */
+  margin: 12px 0;
+  transition: transform 0.2s ease;
+}
+
+.wechat-qr:hover {
+  transform: scale(1.05); /* 鼠标悬停轻微放大 */
+}
+
+.wechat-section {
+  text-align: center;
+  margin-top: 12px;
+}

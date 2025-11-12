@@ -12,6 +12,7 @@ export default function SiteHeader() {
   const [suggestions, setSuggestions] = useState([]);
   const [history, setHistory] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showQR, setShowQR] = useState(false); // ✅ 新增：二维码弹窗状态
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -25,13 +26,13 @@ export default function SiteHeader() {
     if (savedUser) setUser(savedUser);
   }, []);
 
-  // ✅ 恢复历史记录
+  // ✅ 恢复搜索历史
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("searchHistory") || "[]");
     setHistory(saved);
   }, []);
 
-  // ✅ 点击外部隐藏下拉框
+  // ✅ 点击外部隐藏搜索下拉框
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -48,7 +49,6 @@ export default function SiteHeader() {
     const email = e.target.elements.email.value.trim();
     const name = email.split("@")[0];
     const isAdmin = email === "admin@love.com";
-
     const loggedInUser = { name, email, isAdmin };
     setUser(loggedInUser);
     localStorage.setItem("user", JSON.stringify(loggedInUser));
@@ -65,7 +65,6 @@ export default function SiteHeader() {
   // ✅ 搜索逻辑
   const handleSearch = (term) => {
     if (!term.trim()) return;
-    // 保存历史（只保留最近 5 条）
     const newHistory = [term, ...history.filter((h) => h !== term)].slice(0, 5);
     setHistory(newHistory);
     localStorage.setItem("searchHistory", JSON.stringify(newHistory));
@@ -74,20 +73,14 @@ export default function SiteHeader() {
     setMenuOpen(false);
   };
 
-  // ✅ 实时建议过滤
+  // ✅ 实时建议
   useEffect(() => {
     const kw = searchTerm.trim().toLowerCase();
-    if (!kw) {
-      setSuggestions([]);
-      return;
-    }
-    const match = PRESET_SUGGESTIONS.filter((s) =>
-      s.toLowerCase().includes(kw)
-    );
+    if (!kw) return setSuggestions([]);
+    const match = PRESET_SUGGESTIONS.filter((s) => s.toLowerCase().includes(kw));
     setSuggestions(match);
   }, [searchTerm]);
 
-  // ✅ 高亮路由
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -98,18 +91,13 @@ export default function SiteHeader() {
           🌞 心灵能量站
         </div>
 
-        {/* 🧭 菜单导航 */}
+        {/* 🧭 导航菜单 */}
         <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <Link className={isActive("/") ? "active" : ""} to="/">
-            首页
-          </Link>
-          <Link className={isActive("/tests") ? "active" : ""} to="/tests">
-            测试专区
-          </Link>
+          <Link className={isActive("/") ? "active" : ""} to="/">首页</Link>
+          <Link className={isActive("/tests") ? "active" : ""} to="/tests">测试专区</Link>
+          <button className="join-btn" onClick={() => setShowQR(true)}>💛 加入能量社群</button>
           {user?.isAdmin && (
-            <Link className={isActive("/admin") ? "active" : ""} to="/admin">
-              后台管理
-            </Link>
+            <Link className={isActive("/admin") ? "active" : ""} to="/admin">后台管理</Link>
           )}
         </nav>
 
@@ -135,16 +123,14 @@ export default function SiteHeader() {
             <button type="submit">🔍</button>
           </form>
 
-          {/* 🔮 搜索建议 & 历史 */}
+          {/* 🔮 搜索建议 / 历史 */}
           {showDropdown && (
             <div className="search-dropdown">
               {searchTerm ? (
                 suggestions.length > 0 ? (
                   <ul>
                     {suggestions.map((s, i) => (
-                      <li key={i} onClick={() => handleSearch(s)}>
-                        🔮 {s}
-                      </li>
+                      <li key={i} onClick={() => handleSearch(s)}>🔮 {s}</li>
                     ))}
                   </ul>
                 ) : (
@@ -165,9 +151,7 @@ export default function SiteHeader() {
                   </div>
                   <ul>
                     {history.map((h, i) => (
-                      <li key={i} onClick={() => handleSearch(h)}>
-                        {h}
-                      </li>
+                      <li key={i} onClick={() => handleSearch(h)}>{h}</li>
                     ))}
                   </ul>
                 </>
@@ -178,7 +162,7 @@ export default function SiteHeader() {
           )}
         </div>
 
-        {/* 👤 登录区 */}
+        {/* 👤 用户区 */}
         <div className="auth-section">
           {user ? (
             <>
@@ -186,9 +170,7 @@ export default function SiteHeader() {
                 你好，{user.name}
                 {user.isAdmin && <span className="admin-tag">（管理员）</span>}
               </span>
-              <button className="logout-btn" onClick={handleLogout}>
-                退出
-              </button>
+              <button className="logout-btn" onClick={handleLogout}>退出</button>
             </>
           ) : (
             <button
@@ -203,7 +185,7 @@ export default function SiteHeader() {
           )}
         </div>
 
-        {/* 📱 汉堡菜单 */}
+        {/* 📱 菜单按钮 */}
         <button
           className={`menu-toggle ${menuOpen ? "active" : ""}`}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -211,6 +193,18 @@ export default function SiteHeader() {
           ☰
         </button>
       </div>
+
+      {/* 💛 二维码弹窗 */}
+      {showQR && (
+        <div className="qr-overlay" onClick={() => setShowQR(false)}>
+          <div className="qr-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>👥 加入能量社群</h3>
+            <img src="/wechat-qr.jpg" alt="扫码加入能量社群" className="qr-image" />
+            <p>添加微信 <strong>HSTS08</strong> 领取免费兑换码 🎁</p>
+            <button className="close-btn" onClick={() => setShowQR(false)}>关闭</button>
+          </div>
+        </div>
+      )}
 
       {/* 🔐 登录弹窗 */}
       {showAuthModal && (
