@@ -1,6 +1,6 @@
 /* ===============================
-🌞 顶部导航栏（最终优化版）
-保留你原有配色与样式，只优化间距与结构层次
+🌞 顶部导航栏（优化精简版）
+保留原有配色 + 搜索 + 智能建议 + 响应式
 ================================ */
 .site-header {
   position: sticky;
@@ -16,10 +16,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 48px; /* ✅ 左右更宽，菜单不再贴 */
+  padding: 16px 48px;
   max-width: 1200px;
   margin: 0 auto;
-  gap: 40px; /* ✅ 中间呼吸空间 */
+  gap: 40px;
 }
 
 /* 🌞 Logo */
@@ -39,11 +39,12 @@
 /* 🧭 桌面菜单 */
 .nav-links {
   display: flex;
-  gap: 40px; /* ✅ 菜单间距增大 */
+  gap: 40px;
   flex: 1;
-  justify-content: center; /* ✅ 居中更协调 */
+  justify-content: center;
 }
 
+.nav-links a,
 .nav-links button {
   background: none;
   border: none;
@@ -52,18 +53,27 @@
   color: #444;
   cursor: pointer;
   transition: 0.3s;
+  text-decoration: none;
 }
 
+.nav-links a:hover,
 .nav-links button:hover {
   color: #ff9800;
   transform: scale(1.08);
+}
+
+/* 🌈 当前页面高亮 */
+.nav-links a.active {
+  color: #ff6fa8;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 /* 👤 登录注册 */
 .auth-section {
   display: flex;
   align-items: center;
-  gap: 20px; /* ✅ 登录和菜单间留白 */
+  gap: 20px;
 }
 
 .login-btn,
@@ -82,6 +92,96 @@
 .login-btn:hover,
 .logout-btn:hover {
   transform: scale(1.05);
+}
+
+/* 🔍 搜索栏 */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+}
+
+.search-bar input {
+  padding: 6px 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.search-bar input:focus {
+  border-color: #ff7b9c;
+  box-shadow: 0 0 3px rgba(255, 122, 156, 0.5);
+}
+
+.search-bar button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 1.2em;
+}
+
+/* 🔮 搜索智能下拉 */
+.search-dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 220px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+  padding: 6px 0;
+}
+
+.search-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search-dropdown li {
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-dropdown li:hover {
+  background: #fff4f7;
+  color: #ff6fa8;
+}
+
+.no-suggestion {
+  text-align: center;
+  color: #888;
+  padding: 8px;
+  font-size: 0.85rem;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.history-header button {
+  background: none;
+  border: none;
+  color: #ff6fa8;
+  cursor: pointer;
+  font-size: 0.8rem;
 }
 
 /* 📱 移动端菜单 */
@@ -126,11 +226,20 @@
   .menu-toggle {
     display: block;
   }
+
+  .search-bar {
+    width: 100%;
+    margin-top: 8px;
+    justify-content: center;
+  }
+
+  .search-dropdown {
+    width: 90vw;
+    left: 5vw;
+  }
 }
 
-/* ===============================
-🌈 动画
-================================ */
+/* 🌈 动画 */
 @keyframes fadeIn {
   from {
     opacity: 0;

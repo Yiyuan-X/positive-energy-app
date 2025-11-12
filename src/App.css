@@ -333,3 +333,28 @@ body {
     transform: translateY(0);
   }
 }
+
+
+/* 🎨 幸运色视觉优化 */
+.fortune-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+.color-box {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.color-text {
+  font-weight: 600;
+  color: #333;
+}

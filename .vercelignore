@@ -17,6 +17,11 @@ out/
 *.csv
 *.xlsx
 
+sendWelcomeEmail.js
+wechat-notify.js
+wechat-pay.js
+
+
 # ✅ 不要忽略源码文件
 # src/
 # public/

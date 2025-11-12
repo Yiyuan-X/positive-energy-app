@@ -6,5 +6,4 @@ import "./index.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 
-console.log("🚀 index.js loaded");
-alert("✅ React 已加载");
+console.log(" App starting from index.js...");

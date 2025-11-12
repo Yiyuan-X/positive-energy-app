@@ -139,3 +139,34 @@
     transform: translateY(0);
   }
 }
+
+.admin-tag {
+  font-size: 0.8rem;
+  color: #fff;
+  background: #ff7b00;
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-left: 4px;
+}
+
+.talent-result {
+  max-width: 680px;
+  margin: 40px auto;
+  background: #fffaf2;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(255, 182, 73, 0.2);
+  line-height: 1.8;
+  color: #333;
+}
+
+.talent-desc {
+  margin-top: 12px;
+  white-space: pre-line;
+}
+
+.talent-score {
+  margin-top: 16px;
+  font-weight: bold;
+  color: #ff7f50;
+}
