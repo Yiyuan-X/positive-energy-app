@@ -9,41 +9,66 @@ export default function LoveCodeAdmin() {
   const [newCount, setNewCount] = useState(10);
   const [message, setMessage] = useState("");
 
-  // ✅ 读取兑换码列表
   async function loadCodes() {
-    setLoading(true);
-    let query = supabase.from("love_access_codes").select("*").order("created_at", { ascending: false });
-    if (filter === "unused") query = query.eq("is_used", false);
-    if (filter === "used") query = query.eq("is_used", true);
-    const { data, error } = await query;
-    if (error) setMessage("❌ 加载失败：" + error.message);
-    else setCodes(data || []);
-    setLoading(false);
-  }
+    try {
+      setLoading(true);
+      let query = supabase
+        .from("love_access_codes")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-  useEffect(() => { loadCodes(); }, [filter]);
+      if (filter === "unused") query = query.eq("is_used", false);
+      if (filter === "used") query = query.eq("is_used", true);
 
-  // ✅ 生成兑换码
-  async function generateCodes() {
-    setLoading(true);
-    const { data, error } = await supabase.functions.invoke("generate-love-codes", {
-      body: JSON.stringify({ count: newCount })
-    });
-    if (error) setMessage("❌ 生成失败：" + error.message);
-    else {
-      setMessage(`✅ 已生成 ${newCount} 个兑换码`);
-      loadCodes();
+      const { data, error } = await query;
+
+      if (error) {
+        console.error("❌ Supabase 查询失败:", error.message);
+        setMessage("⚠️ 权限不足或加载失败：" + error.message);
+        setCodes([]);
+      } else {
+        setCodes(data || []);
+      }
+    } catch (err) {
+      console.error("💥 代码异常:", err);
+      setMessage("💥 加载时出错：" + err.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
-  // ✅ 导出 CSV
+  useEffect(() => {
+    loadCodes();
+  }, [filter]);
+
+  async function generateCodes() {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.functions.invoke("generate-love-codes", {
+        body: JSON.stringify({ count: newCount }),
+      });
+
+      if (error) {
+        console.error("❌ 生成失败:", error.message);
+        setMessage("❌ 生成失败：" + error.message);
+      } else {
+        setMessage(`✅ 已生成 ${newCount} 个兑换码`);
+        await loadCodes();
+      }
+    } catch (err) {
+      console.error("💥 调用 Edge Function 失败:", err);
+      setMessage("💥 网络或函数错误：" + err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function exportCSV() {
     const csv = [
       ["code", "price", "discount_price", "is_used", "used_at"].join(","),
-      ...codes.map(c =>
+      ...codes.map((c) =>
         [c.code, c.price, c.discount_price, c.is_used, c.used_at || ""].join(",")
-      )
+      ),
     ].join("\n");
 
     const blob = new Blob([csv], { type: "text/csv" });
@@ -71,15 +96,16 @@ export default function LoveCodeAdmin() {
           value={newCount}
           onChange={(e) => setNewCount(Number(e.target.value))}
         />
-        <button onClick={generateCodes} disabled={loading}>⚡ 生成兑换码</button>
+        <button onClick={generateCodes} disabled={loading}>
+          ⚡ 生成兑换码
+        </button>
         <button onClick={exportCSV}>📤 导出 CSV</button>
       </div>
 
       {message && <p className="message">{message}</p>}
+      {loading && <p>加载中...</p>}
 
-      {loading ? (
-        <p>加载中...</p>
-      ) : (
+      {!loading && codes.length > 0 && (
         <table className="code-table">
           <thead>
             <tr>
@@ -92,7 +118,7 @@ export default function LoveCodeAdmin() {
           </thead>
           <tbody>
             {codes.map((c) => (
-              <tr key={c.id} className={c.is_used ? "used" : "unused"}>
+              <tr key={c.code} className={c.is_used ? "used" : "unused"}>
                 <td>{c.code}</td>
                 <td>{c.price}</td>
                 <td>{c.discount_price}</td>
