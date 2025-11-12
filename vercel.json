@@ -1,18 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
-    }
-  ],
   "framework": "create-react-app",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "build",
+  "cleanUrls": true,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/" }
-  ],
-  "ignoreCommand": "pnpm install",
-  "cleanUrls": true
+  ]
 }
