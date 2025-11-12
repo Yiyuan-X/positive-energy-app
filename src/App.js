@@ -1,136 +1,135 @@
 import React, { useState, useEffect } from 'react';
+import positiveMessages from './data/positiveMessages.json';
+import fortuneMessages from './data/fortuneMessages.json';
+import specialMessages from './data/specialMessages.json';
 
 function App() {
-  // 正能量问候语库
-  const positiveMessages = [
-    "今天又是崭新的一天，加油！💪",
-    "你的潜力无限，相信自己！✨",
-    "每一天都是改变生活的机会！🌞",
-    "保持微笑，世界会因你而美好！😊",
-    "小小的进步也是进步，继续前进！🚀",
-    "你是独一无二的，做最棒的自己！🌟",
-    "困难只是暂时的，你能克服一切！🌈",
-    "今天也要全力以赴哦！🔥",
-    "感恩当下，珍惜拥有！🙏",
-    "你的努力终将开花结果！🌼",
-    "保持积极，好事自然来！🎉",
-    "今天是你余生中最年轻的一天！🎯",
-    "每一步都在接近梦想！💫",
-    "你是生活的冠军！🏆",
-    "散发正能量，感染身边的人！⚡"
-  ];
-
-  // 算命预测语库
-  const fortuneMessages = [
-    { 
-      fortune: "大吉大利 🍀", 
-      message: "今天运气爆棚！适合尝试新事物，会有意外收获！", 
-      color: "#e74c3c",
-      bgColor: "linear-gradient(135deg, #ff6b6b, #ee5a24)"
-    },
-    { 
-      fortune: "心想事成 🌟", 
-      message: "你的愿望即将实现，保持积极心态迎接好运！", 
-      color: "#f39c12",
-      bgColor: "linear-gradient(135deg, #fdcb6e, #e17055)"
-    },
-    { 
-      fortune: "贵人相助 👥", 
-      message: "今天会遇到帮助你的人，记得表达感谢！", 
-      color: "#3498db",
-      bgColor: "linear-gradient(135deg, #74b9ff, #0984e3)"
-    },
-    { 
-      fortune: "财运亨通 💰", 
-      message: "财务方面有好消息，但要理性消费哦！", 
-      color: "#27ae60",
-      bgColor: "linear-gradient(135deg, #00b894, #00a085)"
-    },
-    { 
-      fortune: "桃花朵朵 🌸", 
-      message: "感情运势不错，单身者有机会遇到心仪对象！", 
-      color: "#e84393",
-      bgColor: "linear-gradient(135deg, #fd79a8, #e84393)"
-    },
-    { 
-      fortune: "学业进步 📚", 
-      message: "学习效率很高，考试运也不错，加油！", 
-      color: "#9b59b6",
-      bgColor: "linear-gradient(135deg, #a29bfe, #6c5ce7)"
-    },
-    { 
-      fortune: "健康平安 💚", 
-      message: "身体状况良好，记得保持规律作息！", 
-      color: "#2ecc71",
-      bgColor: "linear-gradient(135deg, #55efc4, #00b894)"
-    },
-    { 
-      fortune: "事业上升 📈", 
-      message: "工作上有新机遇，勇敢接受挑战！", 
-      color: "#34495e",
-      bgColor: "linear-gradient(135deg, #636e72, #2d3436)"
-    },
-    { 
-      fortune: "旅行运佳 ✈️", 
-      message: "适合规划短途旅行，放松心情！", 
-      color: "#0984e3",
-      bgColor: "linear-gradient(135deg, #81ecec, #00cec9)"
-    },
-    { 
-      fortune: "创意无限 🎨", 
-      message: "灵感爆棚的一天，适合创作和表达！", 
-      color: "#6c5ce7",
-      bgColor: "linear-gradient(135deg, #dabae8, #a29bfe)"
-    }
-  ];
-
-  // 使用useState管理状态
   const [currentMessage, setCurrentMessage] = useState('');
   const [currentFortune, setCurrentFortune] = useState(null);
+  const [activeTab, setActiveTab] = useState('greeting');
   const [clickCount, setClickCount] = useState(0);
   const [fortuneCount, setFortuneCount] = useState(0);
-  const [activeTab, setActiveTab] = useState('greeting');
+  const [energyDays, setEnergyDays] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [name, setName] = useState('');
+  const [testShown, setTestShown] = useState(false);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [easterEggMessage, setEasterEggMessage] = useState('');
 
-  // 随机选择一条问候语
-  const getRandomMessage = () => {
-    const randomIndex = Math.floor(Math.random() * positiveMessages.length);
-    return positiveMessages[randomIndex];
-  };
 
-  // 随机选择一条算命预测
-  const getRandomFortune = () => {
-    const randomIndex = Math.floor(Math.random() * fortuneMessages.length);
-    return fortuneMessages[randomIndex];
-  };
+  
 
-  // 组件加载时显示第一条问候语
+  // 🎨 实用函数
+  const getLuckyColor = () => ["红色","橙色","黄色","绿色","蓝色","紫色","粉色","金色"][Math.floor(Math.random() * 8)];
+  const getLuckyNumber = () => Math.floor(Math.random() * 9) + 1;
+  const getRandomChallenge = () => [
+    "对一个陌生人微笑 😊","写下三件让你感恩的事 🙏",
+    "发一条正能量朋友圈 📱","喝八杯水 💧","早点睡觉 😴"
+  ][Math.floor(Math.random() * 5)];
+  const getRandomItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const todayKey = new Date().toLocaleDateString('zh-CN');
+
+  // 🗓️ 初始化每日一签
   useEffect(() => {
-    setCurrentMessage(getRandomMessage());
+    const saved = JSON.parse(localStorage.getItem('dailyData') || '{}');
+    if (!saved.date || saved.date !== todayKey) {
+      const newData = {
+        date: todayKey,
+        message: getRandomItem(positiveMessages),
+        fortune: getRandomItem(fortuneMessages),
+        luckyColor: getLuckyColor(),
+        luckyNumber: getLuckyNumber(),
+        challenge: getRandomChallenge(),
+      };
+      localStorage.setItem('dailyData', JSON.stringify(newData));
+      setCurrentMessage(newData.message);
+      setCurrentFortune(newData.fortune);
+    } else {
+      setCurrentMessage(saved.message);
+      setCurrentFortune(saved.fortune);
+    }
+    const days = localStorage.getItem('energyDays') || 0;
+    setEnergyDays(Number(days));
   }, []);
 
-  // 处理获取新问候语的函数
+  // 🧠 能量类型测试
+  useEffect(() => {
+    if (clickCount >= 5 && !testShown) {
+      const types = [
+        { title: "🌞 阳光积极型", desc: "你是鼓励别人的小太阳！" },
+        { title: "🌙 温柔治愈型", desc: "温暖细腻，能量柔而不弱。" },
+        { title: "🔥 冲劲满满型", desc: "敢拼敢闯的实干家！" },
+        { title: "🌈 创意灵感型", desc: "点子不断的灵感源泉！" },
+      ];
+      const random = getRandomItem(types);
+      alert(`🌀 今日能量类型测试结果\n${random.title}\n${random.desc}`);
+      setTestShown(true);
+    }
+  }, [clickCount, testShown]);
+
+  // ✨ 检测节日彩蛋
+  const checkFestival = () => {
+  const date = new Date();
+  const m = date.getMonth() + 1;
+  const d = date.getDate();
+  if (m === 1 && d === 1) {
+    const special = specialMessages[Math.floor(Math.random() * specialMessages.length)];
+    return `🎆 新年快乐！${special}`;
+  }
+  if (m === 12 && d === 25) {
+    const special = specialMessages[Math.floor(Math.random() * specialMessages.length)];
+    return `🎄 圣诞快乐！${special}`;
+  }
+  return "";
+};
+
+
+  // 🧧 检测打卡彩蛋
+  const checkEasterEgg = (days) => {
+    if (days === 7) {
+      setEasterEggMessage("🎁 恭喜你连续打卡 7 天！解锁特别能量语录：『坚持是最强大的魔法』✨");
+      setShowEasterEgg(true);
+    } else if (days === 30) {
+      setEasterEggMessage("🏆 你已成为『能量大师』！感谢你用正能量点亮生活！🌈");
+      setShowEasterEgg(true);
+    }
+  };
+
+  // ⚙️ 按钮逻辑
+  const handleEnergyCheckin = () => {
+    const newDays = energyDays + 1;
+    setEnergyDays(newDays);
+    localStorage.setItem('energyDays', newDays);
+    const checkEasterEgg = (days) => {
+  if (days === 7) {
+    const special = specialMessages[Math.floor(Math.random() * specialMessages.length)];
+    setEasterEggMessage(`🎁 连续打卡 7 天成就达成！\n${special}`);
+    setShowEasterEgg(true);
+  } else if (days === 30) {
+    const special = specialMessages[Math.floor(Math.random() * specialMessages.length)];
+    setEasterEggMessage(`🏆 能量大师降临！\n${special}`);
+    setShowEasterEgg(true);
+  }
+};
+
+  };
+
   const handleNewMessage = () => {
     setIsAnimating(true);
     setTimeout(() => {
-      setCurrentMessage(getRandomMessage());
-      setClickCount(prevCount => prevCount + 1);
+      setClickCount((prev) => prev + 1);
       setIsAnimating(false);
     }, 300);
   };
 
-  // 处理算命函数
   const handleFortuneTelling = () => {
     setIsAnimating(true);
     setTimeout(() => {
-      const newFortune = getRandomFortune();
-      setCurrentFortune(newFortune);
-      setFortuneCount(prevCount => prevCount + 1);
+      setFortuneCount((prev) => prev + 1);
       setIsAnimating(false);
     }, 500);
   };
 
-  // 获取当前时间问候
   const getTimeGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 6) return '深夜好';
@@ -140,268 +139,135 @@ function App() {
     return '晚上好';
   };
 
+  const dailyData = JSON.parse(localStorage.getItem('dailyData') || '{}');
+  const festivalMsg = checkFestival();
+
   return (
-    <div style={{ 
+    <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      fontFamily: '"Helvetica Neue", Arial, sans-serif',
+      background: showEasterEgg
+        ? 'linear-gradient(135deg, #ffe259 0%, #ffa751 100%)'
+        : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      transition: 'background 1s ease',
       padding: '20px'
     }}>
       <div style={{
-        maxWidth: '500px',
-        margin: '0 auto',
-        background: 'rgba(255, 255, 255, 0.95)',
-        borderRadius: '24px',
-        padding: '40px 30px',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
-        backdropFilter: 'blur(10px)',
-        border: '1px solid rgba(255, 255, 255, 0.2)'
+        maxWidth: '520px', margin: '0 auto', background: 'rgba(255,255,255,0.95)',
+        borderRadius: '24px', padding: '40px 30px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.1)', position: 'relative'
       }}>
-        {/* 头部 */}
+
+        {/* ✨ 彩蛋提示 */}
+        {showEasterEgg && (
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, padding: '20px',
+            background: 'linear-gradient(135deg, #f093fb, #f5576c)',
+            color: 'white', borderRadius: '24px 24px 0 0', animation: 'fadeIn 2s ease'
+          }}>
+            <h3 style={{ margin: 0, fontSize: '18px' }}>{easterEggMessage}</h3>
+          </div>
+        )}
+
+        {/* 标题区 */}
         <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <h1 style={{ 
-            color: '#2d3436',
-            fontSize: '28px',
-            fontWeight: '700',
-            marginBottom: '8px',
+          <h1 style={{
             background: 'linear-gradient(135deg, #667eea, #764ba2)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            fontSize: '28px', fontWeight: '700', marginBottom: '6px'
           }}>
             {activeTab === 'greeting' ? '🌞 心灵能量站 🌞' : '🔮 运势指南针 🔮'}
           </h1>
-          
-          <p style={{ 
-            color: '#636e72',
-            fontSize: '16px',
-            fontWeight: '500',
-            marginBottom: '5px'
-          }}>
-            {getTimeGreeting()}！今天是 {new Date().toLocaleDateString('zh-CN', { 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric',
-              weekday: 'long'
-            })}
+          <p style={{ color: '#636e72' }}>
+            {getTimeGreeting()}！今天是 {todayKey}
           </p>
+          {festivalMsg && <p style={{ color: '#e17055', fontWeight: '600' }}>{festivalMsg}</p>}
         </div>
 
-        {/* 选项卡切换 */}
-        <div style={{
-          display: 'flex',
-          background: '#f8f9fa',
-          borderRadius: '50px',
-          padding: '6px',
-          marginBottom: '30px',
-          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <button
-            onClick={() => setActiveTab('greeting')}
+        {/* 选项卡 */}
+        <div style={{ display: 'flex', background: '#f8f9fa', borderRadius: '50px', padding: '6px', marginBottom: '25px' }}>
+          <button onClick={() => setActiveTab('greeting')}
             style={{
-              flex: 1,
-              padding: '12px 20px',
-              fontSize: '14px',
-              fontWeight: '600',
-              background: activeTab === 'greeting' 
-                ? 'linear-gradient(135deg, #667eea, #764ba2)' 
-                : 'transparent',
-              color: activeTab === 'greeting' ? 'white' : '#636e72',
-              border: 'none',
-              borderRadius: '50px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              transform: activeTab === 'greeting' ? 'scale(1.02)' : 'scale(1)'
-            }}
-          >
-            💫 正能量语录
-          </button>
-          <button
-            onClick={() => setActiveTab('fortune')}
+              flex: 1, padding: '12px', fontWeight: '600',
+              background: activeTab === 'greeting' ? 'linear-gradient(135deg,#667eea,#764ba2)' : 'transparent',
+              color: activeTab === 'greeting' ? '#fff' : '#636e72', border: 'none', borderRadius: '50px', cursor: 'pointer'
+            }}>💫 正能量语录</button>
+          <button onClick={() => setActiveTab('fortune')}
             style={{
-              flex: 1,
-              padding: '12px 20px',
-              fontSize: '14px',
-              fontWeight: '600',
-              background: activeTab === 'fortune' 
-                ? 'linear-gradient(135deg, #f093fb, #f5576c)' 
-                : 'transparent',
-              color: activeTab === 'fortune' ? 'white' : '#636e72',
-              border: 'none',
-              borderRadius: '50px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              transform: activeTab === 'fortune' ? 'scale(1.02)' : 'scale(1)'
-            }}
-          >
-            🔮 运势预测
-          </button>
+              flex: 1, padding: '12px', fontWeight: '600',
+              background: activeTab === 'fortune' ? 'linear-gradient(135deg,#f093fb,#f5576c)' : 'transparent',
+              color: activeTab === 'fortune' ? '#fff' : '#636e72', border: 'none', borderRadius: '50px', cursor: 'pointer'
+            }}>🔮 运势预测</button>
         </div>
 
-        {/* 内容区域 */}
+        {/* 内容 */}
         <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: '30px',
-          marginBottom: '30px',
-          minHeight: '180px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)',
-          border: '1px solid rgba(0, 0, 0, 0.05)',
-          opacity: isAnimating ? 0.7 : 1,
-          transform: isAnimating ? 'scale(0.98)' : 'scale(1)',
-          transition: 'all 0.3s ease'
+          background: '#fff', borderRadius: '20px', padding: '30px', minHeight: '180px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 8px 25px rgba(0,0,0,0.08)', transition: '0.3s'
         }}>
           {activeTab === 'greeting' ? (
-            // 正能量语录区域
-            <p style={{
-              fontSize: '20px',
-              color: '#2d3436',
-              lineHeight: '1.6',
-              margin: 0,
-              textAlign: 'center',
-              fontWeight: '500'
-            }}>
-              {currentMessage}
-            </p>
+            <p style={{ fontSize: '20px', color: '#2d3436', textAlign: 'center' }}>{currentMessage}</p>
           ) : (
-            // 算命预测区域
-            <div style={{ textAlign: 'center', width: '100%' }}>
+            <div style={{ textAlign: 'center' }}>
               {currentFortune ? (
                 <>
                   <div style={{
                     background: currentFortune.bgColor,
-                    color: 'white',
-                    padding: '15px 30px',
-                    borderRadius: '50px',
-                    display: 'inline-block',
-                    marginBottom: '20px',
-                    boxShadow: '0 6px 15px rgba(0,0,0,0.2)'
+                    color: 'white', padding: '10px 30px', borderRadius: '50px', marginBottom: '15px'
                   }}>
-                    <h2 style={{
-                      fontSize: '22px',
-                      fontWeight: '700',
-                      margin: 0
-                    }}>
-                      {currentFortune.fortune}
-                    </h2>
+                    <h2>{currentFortune.fortune}</h2>
                   </div>
-                  <p style={{
-                    fontSize: '18px',
-                    color: '#2d3436',
-                    lineHeight: '1.6',
-                    margin: 0,
-                    fontWeight: '500'
-                  }}>
-                    {currentFortune.message}
+                  <p style={{ color: '#2d3436' }}>{currentFortune.message}</p>
+                  <p style={{ marginTop: '10px', color: '#636e72' }}>
+                    🎨 幸运色：{dailyData.luckyColor}　🔢 幸运数字：{dailyData.luckyNumber}
                   </p>
                 </>
-              ) : (
-                <div style={{ color: '#b2bec3', textAlign: 'center' }}>
-                  <div style={{ fontSize: '48px', marginBottom: '15px' }}>🔮</div>
-                  <p style={{ fontSize: '16px', margin: 0 }}>
-                    点击下方按钮开启今日运势预测...
-                  </p>
-                </div>
-              )}
+              ) : <p style={{ color: '#b2bec3' }}>点击下方按钮查看今日运势 🔮</p>}
             </div>
           )}
         </div>
 
-        {/* 按钮区域 */}
-        <div style={{ textAlign: 'center', marginBottom: '25px' }}>
+        {/* 按钮 */}
+        <div style={{ textAlign: 'center', marginTop: '25px' }}>
           {activeTab === 'greeting' ? (
-            <button 
-              onClick={handleNewMessage}
-              style={{
-                padding: '16px 40px',
-                fontSize: '16px',
-                fontWeight: '600',
-                background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '50px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 8px 20px rgba(102, 126, 234, 0.3)',
-                transform: isAnimating ? 'scale(0.95)' : 'scale(1)'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.transform = 'scale(1.05)';
-                e.target.style.boxShadow = '0 12px 25px rgba(102, 126, 234, 0.4)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.transform = isAnimating ? 'scale(0.95)' : 'scale(1)';
-                e.target.style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.3)';
-              }}
-            >
+            <button onClick={handleNewMessage}
+              style={{ padding: '15px 35px', borderRadius: '50px', border: 'none', background: 'linear-gradient(135deg,#667eea,#764ba2)', color: '#fff' }}>
               ✨ 换一句正能量
             </button>
           ) : (
-            <button 
-              onClick={handleFortuneTelling}
-              style={{
-                padding: '16px 40px',
-                fontSize: '16px',
-                fontWeight: '600',
-                background: 'linear-gradient(135deg, #f093fb, #f5576c)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '50px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 8px 20px rgba(245, 87, 108, 0.3)',
-                transform: isAnimating ? 'scale(0.95)' : 'scale(1)'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.transform = 'scale(1.05)';
-                e.target.style.boxShadow = '0 12px 25px rgba(245, 87, 108, 0.4)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.transform = isAnimating ? 'scale(0.95)' : 'scale(1)';
-                e.target.style.boxShadow = '0 8px 20px rgba(245, 87, 108, 0.3)';
-              }}
-            >
+            <button onClick={handleFortuneTelling}
+              style={{ padding: '15px 35px', borderRadius: '50px', border: 'none', background: 'linear-gradient(135deg,#f093fb,#f5576c)', color: '#fff' }}>
               🔮 查看今日运势
             </button>
           )}
         </div>
 
-        {/* 统计信息 */}
-        <div style={{
-          textAlign: 'center',
-          color: '#b2bec3',
-          fontSize: '14px',
-          fontWeight: '500',
-          marginBottom: '30px'
-        }}>
-          {activeTab === 'greeting' 
-            ? `今日已获取 ${clickCount} 条正能量语录`
-            : `今日已进行 ${fortuneCount} 次运势预测`
-          }
+        {/* 名字测试 */}
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="输入名字测试今日能量指数 🔮"
+            style={{ padding: '10px', borderRadius: '10px', width: '80%', border: '1px solid #ccc' }}
+          />
+          {name && (
+            <p style={{ marginTop: '10px', color: '#2d3436', fontWeight: '500' }}>
+              {name} 的今日能量指数：{(name.charCodeAt(0) % 100)}%
+            </p>
+          )}
         </div>
 
-        {/* 温馨提示 */}
+        {/* 打卡与挑战 */}
         <div style={{
-          background: 'linear-gradient(135deg, #a8edea, #fed6e3)',
-          borderRadius: '16px',
-          padding: '20px',
-          textAlign: 'center',
-          border: '1px solid rgba(255, 255, 255, 0.3)'
+          background: 'linear-gradient(135deg,#a8edea,#fed6e3)',
+          borderRadius: '16px', padding: '20px', marginTop: '30px', textAlign: 'center'
         }}>
-          <p style={{ 
-            margin: 0, 
-            color: '#636e72',
-            fontSize: '14px',
-            fontWeight: '500',
-            lineHeight: '1.5'
-          }}>
-            {activeTab === 'greeting' 
-              ? '💫 小贴士：每天给自己一些积极的心理暗示，会让生活更美好！'
-              : '✨ 温馨提示：运势预测仅供娱乐，真正的运气来自你的努力和坚持！'
-            }
-          </p>
+          <p style={{ margin: '0 0 10px', color: '#2d3436' }}>🌿 今日能量挑战：{dailyData.challenge}</p>
+          <button onClick={handleEnergyCheckin}
+            style={{ padding: '10px 25px', borderRadius: '50px', border: 'none', background: 'linear-gradient(135deg,#55efc4,#00cec9)', color: '#fff' }}>
+            ✅ 能量打卡（已打卡 {energyDays} 天）
+          </button>
         </div>
       </div>
     </div>
