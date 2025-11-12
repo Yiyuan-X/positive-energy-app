@@ -45,7 +45,7 @@ html, body {
   padding: 0;
   min-height: 100vh;
   background: transparent;!important;
-  color: #2d3436 !important;
+  background: transparent !important;
   font-family: "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
 }
 
