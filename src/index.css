@@ -44,7 +44,7 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #fff8dc, #ffe59a) !important;
+  background: transparent;!important;
   color: #2d3436 !important;
   font-family: "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
 }
