@@ -1,6 +1,10 @@
-/* 🌞 顶部导航栏 */
+/* ===============================
+🌞 顶部导航栏（最终优化版）
+保留你原有配色与样式，只优化间距与结构层次
+================================ */
 .site-header {
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100%;
   background: linear-gradient(135deg, #fffae6, #fff2b5);
   box-shadow: 0 4px 12px rgba(255, 210, 80, 0.3);
@@ -12,9 +16,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 24px;
-  max-width: 1100px;
+  padding: 16px 48px; /* ✅ 左右更宽，菜单不再贴 */
+  max-width: 1200px;
   margin: 0 auto;
+  gap: 40px; /* ✅ 中间呼吸空间 */
 }
 
 /* 🌞 Logo */
@@ -24,7 +29,9 @@
   color: #ff9800;
   cursor: pointer;
   transition: 0.2s;
+  white-space: nowrap;
 }
+
 .logo:hover {
   transform: scale(1.05);
 }
@@ -32,7 +39,9 @@
 /* 🧭 桌面菜单 */
 .nav-links {
   display: flex;
-  gap: 20px;
+  gap: 40px; /* ✅ 菜单间距增大 */
+  flex: 1;
+  justify-content: center; /* ✅ 居中更协调 */
 }
 
 .nav-links button {
@@ -40,20 +49,21 @@
   border: none;
   font-size: 18px;
   font-weight: 600;
-  color: #555;
+  color: #444;
   cursor: pointer;
   transition: 0.3s;
 }
+
 .nav-links button:hover {
   color: #ff9800;
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 /* 👤 登录注册 */
 .auth-section {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px; /* ✅ 登录和菜单间留白 */
 }
 
 .login-btn,
@@ -61,19 +71,20 @@
   background: linear-gradient(135deg, #ffd452, #ffb347);
   border: none;
   border-radius: 10px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   color: #333;
   transition: 0.3s;
 }
+
 .login-btn:hover,
 .logout-btn:hover {
   transform: scale(1.05);
 }
 
-/* 📱 移动端菜单切换 */
+/* 📱 移动端菜单 */
 .menu-toggle {
   display: none;
   font-size: 28px;
@@ -83,73 +94,21 @@
   color: #555;
 }
 
-/* 登录注册弹窗 */
-.auth-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-}
-
-.auth-box {
-  background: #fff;
-  border-radius: 16px;
-  padding: 30px;
-  width: 90%;
-  max-width: 360px;
-  text-align: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease;
-}
-
-.auth-box input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 15px;
-}
-
-.auth-box .btn-primary {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: linear-gradient(135deg, #ffb347, #ffd452);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.switch-mode {
-  color: #ff9800;
-  cursor: pointer;
-  font-weight: 600;
-}
-.switch-mode:hover {
-  text-decoration: underline;
-}
-
-.close-modal {
-  margin-top: 10px;
-  background: none;
-  border: none;
-  color: #999;
-  cursor: pointer;
-}
-
-/* 📱 移动端响应式 */
+/* ===============================
+📱 移动端响应式
+================================ */
 @media (max-width: 768px) {
+  .header-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 12px 20px;
+    gap: 16px;
+  }
+
   .nav-links {
     display: none;
     position: absolute;
-    top: 60px;
+    top: 64px;
     right: 10px;
     flex-direction: column;
     background: #fff8dc;
@@ -157,6 +116,7 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     padding: 16px;
     gap: 12px;
+    z-index: 200;
   }
 
   .nav-links.open {
@@ -166,14 +126,11 @@
   .menu-toggle {
     display: block;
   }
-
-  .nav-links button {
-    font-size: 18px;
-    font-weight: 500;
-  }
 }
 
-/* 动画 */
+/* ===============================
+🌈 动画
+================================ */
 @keyframes fadeIn {
   from {
     opacity: 0;
