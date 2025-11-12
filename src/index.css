@@ -39,15 +39,12 @@ button {
   transition: all 0.2s ease;
 }
 
-/* 🌈 全局渐变背景，最高优先级 */
 html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: transparent !important;
-  color: #2d3436 !important;
-  font-family: "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
 }
+
 
 /* 保证内容垂直居中 */
 #root {
