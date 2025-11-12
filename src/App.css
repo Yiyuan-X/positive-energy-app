@@ -17,7 +17,7 @@ body {
   align-items: center; 
   min-height: 100vh;
   padding: 30px 20px;
-  background: linear-gradient(135deg, #dfe9ff, #fef4dc); /* ✅ 柔和背景 */
+  background: transparent;
 }
 
 

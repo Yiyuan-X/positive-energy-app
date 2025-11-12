@@ -39,20 +39,22 @@ button {
   transition: all 0.2s ease;
 }
 
-html,
-body {
+/* 🌈 全局渐变背景，最高优先级 */
+html, body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #fff8dc, #ffe59a);
-  color: #2d3436;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff8dc, #ffe59a) !important;
+  color: #2d3436 !important;
   font-family: "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
 }
 
-/* 让根节点居中显示 */
+/* 保证内容垂直居中 */
 #root {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   text-align: center;
+  width: 100%;
 }
