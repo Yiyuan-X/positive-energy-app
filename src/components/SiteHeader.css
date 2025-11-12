@@ -1,36 +1,186 @@
+/* 🌞 顶部导航栏 */
 .site-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(135deg, #f9d976, #f39f86);
-  padding: 12px 20px;
-  color: #2d3436;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  position: sticky;
-  top: 0;
-  z-index: 999;
+  position: relative;
+  width: 100%;
+  background: linear-gradient(135deg, #fffae6, #fff2b5);
+  box-shadow: 0 4px 12px rgba(255, 210, 80, 0.3);
+  z-index: 100;
+  font-family: "Segoe UI", sans-serif;
 }
 
-.site-logo {
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
-.site-logo:hover {
+
+/* 🌞 Logo */
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ff9800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.logo:hover {
   transform: scale(1.05);
 }
 
-.site-nav button {
-  background: none;
-  border: none;
-  margin: 0 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #2d3436;
-  transition: color 0.2s ease;
+/* 🧭 桌面菜单 */
+.nav-links {
+  display: flex;
+  gap: 20px;
 }
 
-.site-nav button:hover {
-  color: #d35400;
+.nav-links button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.nav-links button:hover {
+  color: #ff9800;
+  transform: scale(1.1);
+}
+
+/* 👤 登录注册 */
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-btn,
+.logout-btn {
+  background: linear-gradient(135deg, #ffd452, #ffb347);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #333;
+  transition: 0.3s;
+}
+.login-btn:hover,
+.logout-btn:hover {
+  transform: scale(1.05);
+}
+
+/* 📱 移动端菜单切换 */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+}
+
+/* 登录注册弹窗 */
+.auth-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.auth-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  width: 90%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.auth-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+}
+
+.auth-box .btn-primary {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #ffb347, #ffd452);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.switch-mode {
+  color: #ff9800;
+  cursor: pointer;
+  font-weight: 600;
+}
+.switch-mode:hover {
+  text-decoration: underline;
+}
+
+.close-modal {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+}
+
+/* 📱 移动端响应式 */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    flex-direction: column;
+    background: #fff8dc;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links button {
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

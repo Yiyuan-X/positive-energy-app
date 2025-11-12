@@ -1,0 +1,90 @@
+/* 🌞 PageLayout.css - 通用页面布局样式 */
+
+.page-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fffde7, #fff3b0);
+  color: #333;
+  transition: background 0.3s ease;
+}
+
+.page-content {
+  flex: 1;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(255, 200, 0, 0.25);
+  text-align: center;
+}
+
+/* Header 固定在顶部 */
+.layout-header {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(255, 215, 64, 0.15);
+}
+
+/* 主内容居中对齐 */
+.layout-main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.layout-content {
+  width: 100%;
+  max-width: 960px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 6px 20px rgba(255, 210, 80, 0.25);
+  animation: fadeIn 0.4s ease;
+}
+
+/* 页脚 */
+.layout-footer {
+  flex-shrink: 0;
+  background: #fff8dc;
+  text-align: center;
+  padding: 16px;
+  color: #8d6e63;
+  font-weight: 500;
+  border-top: 1px solid #ffe59a;
+}
+
+/* 🪄 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 移动端优化 */
+@media (max-width: 768px) {
+  .layout-content {
+    padding: 20px;
+    border-radius: 12px;
+  }
+  .layout-main {
+    padding: 20px 10px 80px;
+  }
+  .layout-footer {
+    font-size: 14px;
+    padding: 20px 10px;
+  }
+}

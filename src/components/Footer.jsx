@@ -6,12 +6,10 @@ export default function Footer() {
     <footer className="site-footer">
       <p>© {new Date().getFullYear()} DailyGreeting / Love 系列</p>
       <p>
-        由 <a href="https://vercel.com" target="_blank" rel="noreferrer">Vercel</a> 部署，
-        数据支持自 <a href="https://supabase.com" target="_blank" rel="noreferrer">Supabase</a>
+        由 <a href="https://www.cxktech.top" target="_blank" rel="noreferrer">cxktech.top</a> 部署
       </p>
       <p className="footer-links">
-        <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a> ·
-        <a href="mailto:admin@example.com"> 联系我们</a>
+        <a href="mailto:support@cxktech.top"> 联系我们</a>
       </p>
     </footer>
   );

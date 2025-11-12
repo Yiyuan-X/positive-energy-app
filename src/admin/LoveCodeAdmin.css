@@ -1,28 +1,41 @@
+/* ==============================
+💘 LoveCodeAdmin 页面样式（整合优化版）
+============================== */
+
 .love-admin {
   max-width: 900px;
   margin: 40px auto;
   background: #fffef8;
   padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(255, 210, 80, 0.2);
-  font-family: "Segoe UI", sans-serif;
+  box-shadow: 0 10px 25px rgba(255, 210, 80, 0.25);
+  font-family: "Segoe UI", "PingFang SC", sans-serif;
+  text-align: center;
 }
 
+/* ==============================
+🎀 标题
+============================== */
 .love-admin h2 {
-  text-align: center;
   color: #ffb347;
   font-size: 28px;
+  margin-bottom: 25px;
+  text-shadow: 1px 1px 2px rgba(255, 170, 0, 0.2);
+}
+
+/* ==============================
+⚙️ 操作区
+============================== */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
-.actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 15px;
-}
-
-.actions input, .actions select {
+.actions input,
+.actions select {
   padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid #ddd;
@@ -37,36 +50,81 @@
   cursor: pointer;
   font-weight: 600;
   color: #333;
-  transition: 0.3s;
+  transition: all 0.25s ease;
 }
 
 .actions button:hover {
   transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(255, 180, 0, 0.3);
 }
 
+/* ==============================
+📢 状态消息
+============================== */
 .message {
   text-align: center;
-  color: #f39c12;
+  color: #e67e22;
   font-weight: 500;
+  margin-top: 8px;
 }
 
+/* ==============================
+📋 表格样式（居中 + 阴影）
+============================== */
 .code-table {
-  width: 100%;
+  width: 90%;
+  margin: 20px auto;
   border-collapse: collapse;
-  margin-top: 15px;
-}
-
-.code-table th, .code-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid #eee;
   text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(255, 200, 0, 0.1);
 }
 
+.code-table th,
+.code-table td {
+  padding: 10px;
+  border: 1px solid #f4d3b5;
+}
+
+.code-table th {
+  background-color: #ffe3e7;
+  color: #444;
+  font-weight: 600;
+}
+
+/* ==============================
+✅ 状态行高亮
+============================== */
 tr.used {
-  background: #fff2e0;
-  color: #555;
+  background: #fff4e0;
+  color: #777;
 }
 
 tr.unused {
-  background: #fefbea;
+  background: #fffbe9;
+  color: #333;
+}
+
+/* ==============================
+📱 响应式优化
+============================== */
+@media (max-width: 600px) {
+  .love-admin {
+    padding: 20px 15px;
+  }
+
+  .code-table {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .actions button {
+    width: 100%;
+  }
 }
