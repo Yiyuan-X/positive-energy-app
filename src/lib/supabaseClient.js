@@ -1,15 +1,18 @@
 import { createClient } from "@supabase/supabase-js";
 
+// ✅ 使用 CRA 环境变量格式
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error("❌ Missing Supabase environment variables.");
+} else {
+  console.log("🔍 Supabase URL check:", supabaseUrl);
 }
 
 /**
  * ✅ 全局单例 Supabase 客户端
- * 通过 window.__supabaseClient__ 确保全局唯一
+ * - 防止多次创建
  */
 if (!window.__supabaseClient__) {
   console.log("🪄 Initializing Supabase Client once");
