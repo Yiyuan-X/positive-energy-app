@@ -1,6 +1,24 @@
-# 保持源代码一致使用 LF
+# 全部文本文件统一使用 LF 换行符
 * text=auto eol=lf
 
-# 忽略 node_modules / pnpm 缓存
-.pnpm-store/** -text
-node_modules/** -text
+# 二进制文件不做换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.pdf binary
+
+# 保留语义色彩的语言文件
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sql text eol=lf
+*.md text eol=lf
