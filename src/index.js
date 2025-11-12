@@ -1,7 +1,10 @@
+// ✅ 样式必须最先导入，防止渲染前紫屏
+import "./index.css";
+import "./App.css";
+
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
 
 // 🚀 根日志
 console.log("🚀 React 根文件加载成功");
@@ -29,11 +32,7 @@ function ErrorBoundaryWrapper() {
 const rootEl = document.getElementById("root");
 try {
   const root = ReactDOM.createRoot(rootEl);
-  root.render(
-    <React.StrictMode>
-      <ErrorBoundaryWrapper />
-    </React.StrictMode>
-  );
+  root.render(<ErrorBoundaryWrapper />);
   console.log("✅ ReactDOM 渲染启动成功");
 } catch (err) {
   console.error("💥 React 渲染阶段错误:", err);

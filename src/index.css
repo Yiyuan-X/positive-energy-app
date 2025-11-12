@@ -4,15 +4,6 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -46,4 +37,22 @@ button {
 /* 确保所有元素都平滑过渡 */
 * {
   transition: all 0.2s ease;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #fff8dc, #ffe59a);
+  color: #2d3436;
+  font-family: "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
+}
+
+/* 让根节点居中显示 */
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
 }
