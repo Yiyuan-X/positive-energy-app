@@ -1,24 +1,30 @@
 # ============================================================
-# 🚫 Node & Package Manager
+# 🚀 React + PNPM + Vercel Optimal .gitignore
 # ============================================================
+
+# Node & Package Manager
 node_modules/
 .pnpm-store/
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 package-lock.json
+yarn.lock
 
 # ============================================================
-# 🏗️ Build Outputs
+# 🏗️ Build Outputs (Vercel 会自动构建，不需上传 build)
 # ============================================================
-build/
 dist/
-.vercel/
-out/
 coverage/
 tmp/
 .cache/
+out/
+.DS_Store
+Thumbs.db
+
+# ✅ 保留源码给 Vercel 构建
+# 不要忽略 src/, public/, admin/, components/
 
 # ============================================================
 # ⚙️ Environment & Secrets
@@ -28,19 +34,18 @@ tmp/
 !.env.example
 
 # ============================================================
-# 🧠 System Files
+# 🧠 IDE & System Files
 # ============================================================
-.DS_Store
-Thumbs.db
 .vscode/
 .idea/
-
-# ============================================================
-# 📦 Local Archives
-# ============================================================
-*.zip
-*.csv
-*.xlsx
 *.bak
 *.tmp
-.vercel
+*.zip
+*.xlsx
+*.csv
+*.log
+
+# ============================================================
+# 🧱 Local Deploy / Platform Files
+# ============================================================
+.vercel/

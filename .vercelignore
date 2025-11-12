@@ -1,0 +1,25 @@
+# ============================================================
+# 🧱 Vercel Deploy Optimization
+# ============================================================
+
+# 仅忽略本地缓存与调试文件
+node_modules/
+.pnpm-store/
+.cache/
+coverage/
+tmp/
+dist/
+out/
+*.log
+*.zip
+*.tmp
+*.bak
+*.csv
+*.xlsx
+
+# ✅ 不要忽略源码文件
+# src/
+# public/
+# admin/
+# components/
+# lib/

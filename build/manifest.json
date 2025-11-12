@@ -1,0 +1,15 @@
+{
+  "short_name": "DailyGreeting",
+  "name": "DailyGreeting | 心灵能量站",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ff99cc",
+  "background_color": "#fff7f9"
+}
