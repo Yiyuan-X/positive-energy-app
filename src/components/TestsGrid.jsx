@@ -1,27 +1,99 @@
-import { createClient } from "@supabase/supabase-js";
+import React, { useMemo, useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import "./TestsGrid.css";
 
-// ✅ 从环境变量中读取
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
-const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+// Catalog of available tests
+const ALL_TESTS = [
+  {
+    key: "talent",
+    title: "天赋潜能测试",
+    desc: "10 题速测你的天赋类型与优势。",
+    to: "/talent-test",
+    tags: ["天赋", "职业", "优势"],
+  },
+  {
+    key: "love-possess",
+    title: "爱情占有欲测试（专业版）",
+    desc: "评估情感安全感与依恋倾向。",
+    to: "/love-test",
+    tags: ["恋爱", "依恋", "安全感"],
+  },
+  {
+    key: "love-feeling",
+    title: "爱情心动值测试（专业版）",
+    desc: "用 10 题量化你的心动直觉。",
+    to: "/love-feeling-test",
+    tags: ["恋爱", "心动", "直觉"],
+  },
+  {
+    key: "energy",
+    title: "能量状态测试（专业版）",
+    desc: "了解当下身心能量与恢复建议。",
+    to: "/energy-test",
+    tags: ["情绪", "能量", "恢复"],
+  },
+];
 
-// ✅ 打印调试信息
-console.log("🔍 Supabase URL check:", supabaseUrl);
+export default function TestsGrid() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const qParam = searchParams.get("q") || "";
+  const [q, setQ] = useState(qParam);
 
-// ✅ 定义变量占位
-let supabase;
+  useEffect(() => {
+    setQ(qParam);
+  }, [qParam]);
 
-// ✅ fallback 防止白屏
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error("❌ Missing Supabase ENV vars. Using fallback empty client.");
-  supabase = {
-    from: () => ({
-      select: async () => ({ data: [], error: null }),
-      insert: async () => ({ data: null, error: null }),
-    }),
+  const list = useMemo(() => {
+    const kw = (qParam || "").trim().toLowerCase();
+    if (!kw) return ALL_TESTS;
+    return ALL_TESTS.filter((t) =>
+      [t.title, t.desc, ...(t.tags || [])]
+        .join(" ")
+        .toLowerCase()
+        .includes(kw)
+    );
+  }, [qParam]);
+
+  const applySearch = (term) => {
+    const next = term.trim();
+    if (next) setSearchParams({ q: next });
+    else setSearchParams({});
   };
-} else {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  return (
+    <div className="tests-grid">
+      <h2>精选测试</h2>
+      <p className="subtitle">每天 3 分钟，了解自己一点点</p>
+
+      <div className="local-search">
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="搜索：天赋 / 恋爱 / 能量 ..."
+        />
+        <button onClick={() => applySearch(q)}>搜索</button>
+      </div>
+
+      <div className="test-list">
+        {list.map((t) => (
+          <Link key={t.key} to={t.to} className="test-card">
+            <h3>{t.title}</h3>
+            <p>{t.desc}</p>
+            {t.tags?.length ? (
+              <div className="tags">
+                {t.tags.map((tag) => (
+                  <span key={tag} className="tag">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </Link>
+        ))}
+      </div>
+
+      {list.length === 0 && <p className="no-result">未找到相关测试</p>}
+    </div>
+  );
 }
 
-// ✅ 顶层导出（必须在 if 外）
-export { supabase };

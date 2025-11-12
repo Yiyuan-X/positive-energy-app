@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkpositive_energy_app=self.webpackChunkpositive_energy_app||[]).push([[191],{191:(s,e,p)=>{p.r(e),p.d(e,{supabase:()=>t});var i=p(232);const c="https://lyevkrhmnpcmtyodipik.supabase.co",I="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5ZXZrcmhtbnBjbXR5b2RpcGlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MDQ0MjEsImV4cCI6MjA3ODQ4MDQyMX0.vJTUXsTtnMw9tV1G--7oWsyBGqmEF3-VMfSfSYUD9pY";let t;console.log("\ud83d\udd0d Supabase URL check:",c),t=(0,i.UU)(c,I)}}]);
-//# sourceMappingURL=191.371e8818.chunk.js.map
