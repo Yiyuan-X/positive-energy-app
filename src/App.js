@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { lazy, Suspense, useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import positiveMessages from "./data/positiveMessages.json";
 import fortuneMessages from "./data/fortuneMessages.json";
@@ -9,11 +9,14 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import "./App.css";
 import TalentTest from "./components/TalentTest";
 import LovePossessivenessTestPro from "./components/LovePossessivenessTestPro";
-import LoveCodeAdmin from "./admin/LoveCodeAdmin";
-import LoveOrdersAdmin from "./admin/LoveOrdersAdmin";
 import TestsGrid from "./components/TestsGrid";
 import { seo as siteSeo } from "./lib/seoConfig";
 
+// ✅ 懒加载后台模块（避免 Vercel 构建错误）
+const LoveCodeAdmin = lazy(() => import("./admin/LoveCodeAdmin"));
+const LoveOrdersAdmin = lazy(() => import("./admin/LoveOrdersAdmin"));
+
+// ✅ 全局错误监听
 console.log("✅ App 已加载");
 window.addEventListener("error", (e) => {
   console.error("❌ 全局错误捕获:", e.message, e.filename, e.lineno);
@@ -23,6 +26,9 @@ window.addEventListener("unhandledrejection", (e) => {
 });
 
 function App() {
+  // ---------------------------
+  // 🔧 状态管理
+  // ---------------------------
   const [tab, setTab] = useState("greeting");
   const [currentMessage, setCurrentMessage] = useState("");
   const [currentFortune, setCurrentFortune] = useState(null);
@@ -35,7 +41,9 @@ function App() {
   const [showTests, setShowTests] = useState(false);
   const [festivalMsg, setFestivalMsg] = useState("");
 
+  // ---------------------------
   // 📅 初始化每日语录 + 运势
+  // ---------------------------
   useEffect(() => {
     const todayKey = new Date().toLocaleDateString("zh-CN");
     const saved = JSON.parse(localStorage.getItem("dailyData") || "{}");
@@ -64,6 +72,9 @@ function App() {
     if (m === 12 && dd === 25) setFestivalMsg(getRandom(specialMessages));
   }, []);
 
+  // ---------------------------
+  // 🌞 页面主体内容（带 Header/Footer）
+  // ---------------------------
   return (
     <ErrorBoundary>
       <Helmet>
@@ -74,25 +85,26 @@ function App() {
         <link rel="canonical" href={siteSeo.canonical} />
       </Helmet>
 
-      {/* ✅ PageLayout 始终包裹所有页面 */}
+      {/* ✅ 全局布局（含 Header + Footer） */}
       <PageLayout>
-        {showTalentTest ? (
-          <TalentTest onFinish={() => setShowTalentTest(false)} />
-        ) : showLoveTest ? (
-          <LovePossessivenessTestPro onFinish={() => setShowLoveTest(false)} />
-        ) : showAdmin ? (
-          <LoveCodeAdmin />
-        ) : showOrdersAdmin ? (
-          <LoveOrdersAdmin />
-        ) : showTests ? (
-          <TestsGrid />
-        ) : (
-          <>
+        <Suspense fallback={<p style={{ textAlign: "center" }}>加载中...</p>}>
+          {showTalentTest ? (
+            <TalentTest onFinish={() => setShowTalentTest(false)} />
+          ) : showLoveTest ? (
+            <LovePossessivenessTestPro onFinish={() => setShowLoveTest(false)} />
+          ) : showAdmin ? (
+            <LoveCodeAdmin />
+          ) : showOrdersAdmin ? (
+            <LoveOrdersAdmin />
+          ) : showTests ? (
+            <TestsGrid />
+          ) : (
             <main className="container">
               <h1 className="text-3xl font-bold mb-2">🌞 心灵能量站</h1>
               <p>今天是 {new Date().toLocaleDateString("zh-CN")}</p>
               {festivalMsg && <p className="festival">{festivalMsg}</p>}
 
+              {/* 🔀 标签切换 */}
               <div className="tabs">
                 <button
                   onClick={() => setTab("greeting")}
@@ -108,6 +120,7 @@ function App() {
                 </button>
               </div>
 
+              {/* 🌞 内容区 */}
               {tab === "greeting" ? (
                 <section>
                   <p className="message">{currentMessage}</p>
@@ -142,6 +155,7 @@ function App() {
                 </section>
               )}
 
+              {/* 🔋 能量打卡 */}
               <section className="challenge">
                 <p>🌿 今日能量挑战：每天保持积极心态！</p>
                 <button
@@ -155,6 +169,7 @@ function App() {
                 </button>
               </section>
 
+              {/* 🧬 测试入口 */}
               <section className="register">
                 <button onClick={() => setShowRegister(true)}>✉️ 加入能量社群</button>
                 <button onClick={() => setShowTests(true)}>🧠 查看所有测试</button>
@@ -162,8 +177,8 @@ function App() {
 
               {showRegister && <RegisterForm onClose={() => setShowRegister(false)} />}
             </main>
-          </>
-        )}
+          )}
+        </Suspense>
       </PageLayout>
     </ErrorBoundary>
   );

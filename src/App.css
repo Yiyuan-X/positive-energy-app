@@ -2,6 +2,9 @@
 🍌 App.css - 香蕉暖色系主题
 自适应布局 + 柔和阴影 + 动画过渡
 ================================ */
+/* ===============================
+🍋 全局背景 + App 主容器
+================================ */
 
 body {
   margin: 0;
@@ -9,17 +12,21 @@ body {
   background: linear-gradient(135deg, #fff8dc, #ffe59a);
   color: #2d3436;
   transition: background 0.5s ease;
+  background-attachment: fixed; /* ✅ 防止滚动时背景移动 */
 }
 
 .app {
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: flex-start;
   min-height: 100vh;
   padding: 30px 20px;
-  background: transparent;
+  background: transparent; /* ✅ 让 body 渐变透出来 */
 }
 
+/* ===============================
+🍯 主容器卡片
+================================ */
 
 .container {
   width: 100%;
