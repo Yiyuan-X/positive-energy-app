@@ -1,0 +1,145 @@
+/* ========= 注册弹窗基础样式 ========= */
+.register-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 249, 230, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+  z-index: 9999;
+}
+
+.register-modal {
+  background: #fffef3;
+  border-radius: 20px;
+  padding: 35px 25px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  animation: slideUp 0.4s ease;
+  position: relative;
+}
+
+/* ========= 关闭按钮 ========= */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: #f59e0b;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.close-btn:hover {
+  transform: scale(1.2);
+}
+
+/* ========= 标题 ========= */
+.register-modal h2 {
+  background: linear-gradient(135deg, #fcd34d, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* ========= 表单样式 ========= */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.register-form input,
+.register-form textarea {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 14px;
+  border: 1px solid #fbc02d;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s ease;
+  background: white;
+}
+.register-form input:focus,
+.register-form textarea:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+}
+
+.register-form textarea {
+  resize: none;
+  min-height: 80px;
+}
+
+/* ========= 提交按钮 ========= */
+.submit-btn {
+  background: linear-gradient(135deg, #fcd34d, #f59e0b);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 15px rgba(245, 158, 11, 0.3);
+}
+.submit-btn:hover {
+  background: linear-gradient(135deg, #fde047, #fbbf24);
+  box-shadow: 0 8px 18px rgba(245, 158, 11, 0.4);
+  transform: scale(1.05);
+}
+
+/* ========= 底部提示 ========= */
+.register-hint {
+  font-size: 13px;
+  color: #856404;
+  margin-top: 15px;
+  opacity: 0.9;
+}
+
+/* ========= 动画 ========= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ========= 响应式 ========= */
+@media (max-width: 480px) {
+  .register-modal {
+    width: 92%;
+    padding: 25px 18px;
+  }
+  .register-modal h2 {
+    font-size: 20px;
+  }
+  .submit-btn {
+    font-size: 15px;
+    padding: 10px 24px;
+  }
+}

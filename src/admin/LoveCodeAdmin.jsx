@@ -1,0 +1,108 @@
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+import "./LoveCodeAdmin.css";
+
+export default function LoveCodeAdmin() {
+  const [codes, setCodes] = useState([]);
+  const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(false);
+  const [newCount, setNewCount] = useState(10);
+  const [message, setMessage] = useState("");
+
+  // ✅ 读取兑换码列表
+  async function loadCodes() {
+    setLoading(true);
+    let query = supabase.from("love_access_codes").select("*").order("created_at", { ascending: false });
+    if (filter === "unused") query = query.eq("is_used", false);
+    if (filter === "used") query = query.eq("is_used", true);
+    const { data, error } = await query;
+    if (error) setMessage("❌ 加载失败：" + error.message);
+    else setCodes(data || []);
+    setLoading(false);
+  }
+
+  useEffect(() => { loadCodes(); }, [filter]);
+
+  // ✅ 生成兑换码
+  async function generateCodes() {
+    setLoading(true);
+    const { data, error } = await supabase.functions.invoke("generate-love-codes", {
+      body: JSON.stringify({ count: newCount })
+    });
+    if (error) setMessage("❌ 生成失败：" + error.message);
+    else {
+      setMessage(`✅ 已生成 ${newCount} 个兑换码`);
+      loadCodes();
+    }
+    setLoading(false);
+  }
+
+  // ✅ 导出 CSV
+  function exportCSV() {
+    const csv = [
+      ["code", "price", "discount_price", "is_used", "used_at"].join(","),
+      ...codes.map(c =>
+        [c.code, c.price, c.discount_price, c.is_used, c.used_at || ""].join(",")
+      )
+    ].join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "love_access_codes.csv";
+    link.click();
+  }
+
+  return (
+    <div className="love-admin">
+      <h2>💘 兑换码管理面板</h2>
+
+      <div className="actions">
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">全部</option>
+          <option value="unused">未使用</option>
+          <option value="used">已使用</option>
+        </select>
+
+        <input
+          type="number"
+          min="1"
+          max="100"
+          value={newCount}
+          onChange={(e) => setNewCount(Number(e.target.value))}
+        />
+        <button onClick={generateCodes} disabled={loading}>⚡ 生成兑换码</button>
+        <button onClick={exportCSV}>📤 导出 CSV</button>
+      </div>
+
+      {message && <p className="message">{message}</p>}
+
+      {loading ? (
+        <p>加载中...</p>
+      ) : (
+        <table className="code-table">
+          <thead>
+            <tr>
+              <th>兑换码</th>
+              <th>原价</th>
+              <th>优惠价</th>
+              <th>状态</th>
+              <th>使用时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            {codes.map((c) => (
+              <tr key={c.id} className={c.is_used ? "used" : "unused"}>
+                <td>{c.code}</td>
+                <td>{c.price}</td>
+                <td>{c.discount_price}</td>
+                <td>{c.is_used ? "✅ 已用" : "🕓 未用"}</td>
+                <td>{c.used_at ? new Date(c.used_at).toLocaleString() : "-"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}

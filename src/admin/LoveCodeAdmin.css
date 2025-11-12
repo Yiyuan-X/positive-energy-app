@@ -1,0 +1,72 @@
+.love-admin {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fffef8;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(255, 210, 80, 0.2);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.love-admin h2 {
+  text-align: center;
+  color: #ffb347;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.actions input, .actions select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.actions button {
+  background: linear-gradient(135deg, #ffb347, #ffd452);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #333;
+  transition: 0.3s;
+}
+
+.actions button:hover {
+  transform: scale(1.05);
+}
+
+.message {
+  text-align: center;
+  color: #f39c12;
+  font-weight: 500;
+}
+
+.code-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.code-table th, .code-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+tr.used {
+  background: #fff2e0;
+  color: #555;
+}
+
+tr.unused {
+  background: #fefbea;
+}

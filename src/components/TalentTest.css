@@ -1,0 +1,141 @@
+/* ===============================
+🍌 TalentTest.css - 超强天赋测试界面
+香蕉暖色系 + 柔光风格 + 自适应布局
+================================ */
+
+.talent-test {
+  text-align: center;
+  background: #fffbea;
+  border-radius: 24px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 25px rgba(255, 200, 0, 0.3);
+  animation: fadeIn 0.8s ease;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.talent-test h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffb300;
+  margin-bottom: 20px;
+}
+
+.talent-test p {
+  font-size: 18px;
+  color: #4d4d4d;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+/* 选项按钮 */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.options button {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #ffe259, #ffa751);
+  color: #333;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 15px rgba(255, 200, 0, 0.25);
+}
+
+.options button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #fff86b, #ffb347);
+}
+
+/* 进度 */
+.talent-test p:last-child {
+  font-size: 14px;
+  color: #a38b00;
+  font-weight: 500;
+}
+
+/* ===============================
+🧬 测试结果
+================================ */
+.talent-result {
+  text-align: center;
+  background: linear-gradient(135deg, #fff9e6, #ffecb3);
+  border-radius: 24px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 25px rgba(255, 200, 0, 0.3);
+  max-width: 520px;
+  margin: 0 auto;
+  animation: fadeIn 1s ease;
+}
+
+.talent-result h2 {
+  font-size: 24px;
+  color: #ffb300;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.talent-result p {
+  font-size: 17px;
+  color: #4d4d4d;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.talent-result button {
+  border: none;
+  border-radius: 50px;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3436;
+  background: linear-gradient(135deg, #ffe259, #ffa751);
+  box-shadow: 0 6px 15px rgba(255, 200, 0, 0.25);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.talent-result button:hover {
+  transform: scale(1.05);
+}
+
+/* ===============================
+📱 自适应
+================================ */
+@media (max-width: 600px) {
+  .talent-test,
+  .talent-result {
+    padding: 25px 20px;
+  }
+
+  .talent-test h2,
+  .talent-result h2 {
+    font-size: 22px;
+  }
+
+  .options button {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+
+/* ===============================
+🌈 动画
+================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

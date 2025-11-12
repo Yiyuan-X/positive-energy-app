@@ -1,0 +1,51 @@
+.love-lock, .love-test, .love-result {
+  text-align: center;
+  background: linear-gradient(135deg, #fff0f5, #ffe0eb);
+  border-radius: 24px;
+  padding: 40px 30px;
+  box-shadow: 0 10px 25px rgba(255, 120, 150, 0.3);
+  max-width: 520px;
+  margin: 0 auto;
+  animation: fadeIn 0.8s ease;
+}
+
+.love-lock input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ff8ba7;
+  width: 70%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.price-info {
+  color: #ff3366;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+.love-lock .hint {
+  font-size: 14px;
+  color: #999;
+}
+
+.options button {
+  background: linear-gradient(135deg, #ff9aa2, #ffb6c1);
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  color: white;
+  font-weight: 600;
+  margin: 6px 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.options button:hover {
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}

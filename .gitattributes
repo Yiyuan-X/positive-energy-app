@@ -1,0 +1,6 @@
+# 保持源代码一致使用 LF
+* text=auto eol=lf
+
+# 忽略 node_modules / pnpm 缓存
+.pnpm-store/** -text
+node_modules/** -text

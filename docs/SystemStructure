@@ -1,0 +1,179 @@
+DailyGreeting / Love 系列系统 — 系统与代码结构说明
+
+本文梳理当前仓库的业务逻辑与代码结构，并作为后续开发参考。
+若与实现不符，以实际代码为准（请在提交前对照本文各节关联文件快速定位）。
+
+总览
+
+系统定位：
+集合「每日正能量问候」「运势预测」「心理测评」「恋爱占有欲测试」「微信支付」等功能的轻应用系统，支持注册收集、兑换码激活、付费解锁与后台管理。
+
+核心模块：
+
+🌞 正能量语录与每日运势
+
+💘 恋爱占有欲测试（兑换码验证）
+
+💳 微信 H5 支付购买兑换码
+
+🧑‍💻 管理后台（订单/兑换码管理）
+
+🔐 Supabase 登录认证与角色管理
+
+技术栈：
+
+React 18（CRA 架构）
+
+Supabase（Postgres + Auth）
+
+微信支付 H5 官方接口（标准版）
+
+Vercel 部署（静态构建 + API Proxy）
+
+Resend 邮件通知 API（可选）
+
+目录结构（关键）
+
+src：主应用源代码
+
+App.js：主入口组件（正能量语录 + 运势 + 打卡 + 注册入口）
+
+index.js：React 应用入口（挂载 root 节点）
+
+index.css：全局样式，统一香蕉色调 + 自适应布局
+
+🗂️ data（静态数据源）
+文件	功能说明
+data/positiveMessages.json	500 条每日正能量语录
+data/fortuneMessages.json	500 条运势预测短语
+data/specialMessages.json	节日祝福与隐藏彩蛋
+data/lovePossessivenessQuestionsPro.json	💘 恋爱占有欲题库（100 道经典题，随机抽取）
+⚙️ components（核心业务组件）
+文件	功能说明
+components/RegisterForm.jsx	📬 注册与潜在客户收集表单（Supabase 插入 contacts 表）
+components/RegisterForm.css	表单样式（渐变背景 + 模糊遮罩）
+components/TalentTest.jsx	🧠 天赋测试（可扩展为多题型心理测评）
+components/TalentTest.css	天赋测试样式
+components/LovePossessivenessTestPro.jsx	💞 恋爱占有欲测试（随机题库 + 兑换码验证）
+components/LovePossessivenessTestPro.css	测试结果卡片 + 渐变背景样式
+🌐 pages（独立页面）
+文件	功能说明
+pages/Login.jsx	用户登录界面（基于 Supabase Auth）
+pages/Login.css	登录样式（香蕉暖色风格）
+pages/BuyCode.jsx	💳 兑换码购买页（微信 H5 支付下单）
+pages/BuyCode.css	支付页面样式与确认交互
+🧑‍💻 admin（后台管理系统）
+文件	功能说明
+admin/LoveOrdersAdmin.jsx	💰 支付订单管理（含筛选、导出 CSV、状态展示）
+admin/LoveOrdersAdmin.css	后台表格样式（响应式 + 状态高亮）
+admin/LoveCodeAdmin.jsx	🎟️ 兑换码管理后台（生成、查询、导出）
+admin/LoveCodeAdmin.css	兑换码管理样式
+admin/LoveOrdersDashboard.jsx	📊 （规划中）收入趋势与支付数据可视化
+🧩 hooks（逻辑复用）
+文件	功能说明
+hooks/useSupabaseAuth.js	🔐 通用登录 Hook（检测登录状态、角色、登出功能）
+🔧 lib（服务封装）
+文件	功能说明
+lib/supabaseClient.js	Supabase 客户端实例初始化
+lib/wechatPay.js	（规划中）封装微信支付请求与回调校验
+lib/resend.js	（可选）邮件 API 发送（注册成功通知）
+📘 docs（项目文档）
+文件	功能说明
+docs/System_Architecture.md	当前系统与代码结构文档
+docs/Database_Schema.md	Supabase 表结构说明与索引定义
+docs/API_Endpoints.md	后端 API 设计与回调流程说明
+中间件与访问控制
+
+登录认证通过 useSupabaseAuth() 管理，自动检查 session。
+
+非管理员访问 /admin/* 页面会被拦截显示「无权限」。
+
+登录状态变化实时同步至组件状态。
+
+可在未来加入 /ProtectedRoute.jsx 统一封装路由保护逻辑。
+
+核心业务流程
+💘 恋爱占有欲测试流程
+
+用户输入兑换码 → Supabase 查询 love_access_codes
+
+验证未使用 → 解锁测试界面
+
+随机抽取 10 道题（从 100 道题中缓存当日随机）
+
+答题得分 → 输出心理类型结果与建议
+
+更新兑换码状态为已使用（is_used=true）
+
+💳 微信 H5 支付流程
+
+用户在 /buy-code.jsx 页面创建订单
+
+生成 love_orders 记录（状态 pending）
+
+调用微信统一下单接口返回 mweb_url
+
+用户支付成功 → 回调接口校验签名
+
+Supabase 更新订单状态为 paid，并分配兑换码
+
+（可选）Resend 邮件 / 微信模板通知发送确认信息
+
+🧑‍💻 管理后台逻辑
+
+管理员登录后查看：
+
+love_orders：订单流水、金额、状态
+
+love_access_codes：兑换码生成、导出、使用情况
+
+支持 CSV 导出、状态过滤、搜索订单号
+
+后续将加入图表分析模块（Recharts）
+
+数据库结构（简要）
+profiles
+字段	类型	说明
+id	uuid	主键，对应 Supabase 用户 ID
+email	text	邮箱地址
+role	text	用户角色（user / admin）
+full_name	text	姓名
+created_at	timestamptz	创建时间
+love_access_codes
+字段	类型	说明
+code	text	兑换码（唯一）
+price	numeric	原价
+discount_price	numeric	优惠价
+is_used	boolean	是否使用
+used_at	timestamptz	使用时间
+created_at	timestamptz	创建时间
+love_orders
+字段	类型	说明
+order_no	text	订单号（唯一）
+total_fee	integer	金额（分）
+status	text	状态（pending/paid/failed）
+transaction_id	text	微信交易号
+pay_time	timestamptz	支付时间
+code_id	uuid	兑换码 ID
+created_at	timestamptz	创建时间
+部署与环境变量
+变量名	说明
+SUPABASE_URL	Supabase 项目地址
+SUPABASE_ANON_KEY	公钥
+SUPABASE_SERVICE_ROLE_KEY	服务密钥（用于生成兑换码）
+WECHAT_APP_ID	微信 AppID
+WECHAT_MCH_ID	商户号
+WECHAT_API_KEY	API v3 密钥
+RESEND_API_KEY	邮件通知 API Key
+SITE_URL	站点地址（Vercel）
+后续工作建议
+
+ 增加「AI 天赋测试」与「人格类型分析」题库模块
+
+ 支持兑换码批量导入与扫码验证
+
+ 集成微信小程序支付回调（native 模式）
+
+ 增强后台仪表板（每日收入趋势、兑换码使用率）
+
+ 加入自动发信通知模块（Resend / 微信模板消息）

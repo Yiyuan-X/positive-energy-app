@@ -1,0 +1,36 @@
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #f9d976, #f39f86);
+  padding: 12px 20px;
+  color: #2d3436;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.site-logo {
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.site-logo:hover {
+  transform: scale(1.05);
+}
+
+.site-nav button {
+  background: none;
+  border: none;
+  margin: 0 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #2d3436;
+  transition: color 0.2s ease;
+}
+
+.site-nav button:hover {
+  color: #d35400;
+}
