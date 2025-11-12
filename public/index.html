@@ -2,82 +2,55 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#667eea" />
-    <meta name="description" content="每日正能量问候与运势预测 - 让每一天都充满正能量和好运！" />
-    
-    <!-- Open Graph 标签，用于社交媒体分享 -->
-    <meta property="og:title" content="心灵能量站 - 每日正能量 & 运势预测" />
-    <meta property="og:description" content="获取每日正能量语录和有趣的运势预测，让生活更美好！" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#ff99cc" />
+
+    <title>🌞 心灵能量站 | DailyGreeting & Love 系列</title>
+    <meta
+      name="description"
+      content="每日一句积极语录 ✨ 心灵能量打卡 💗 天赋测试与爱之兑换系统，陪你一起成为更好的自己。"
+    />
+
+    <!-- 🌈 Open Graph / 微信分享优化 -->
+    <meta property="og:title" content="🌞 心灵能量站" />
+    <meta
+      property="og:description"
+      content="每日一句积极语录 ✨ 与爱同行的成长旅程。"
+    />
+    <meta property="og:image" content="/favicon.svg" />
     <meta property="og:type" content="website" />
-    
-    <title>心灵能量站 - 每日正能量 & 运势预测</title>
-    
-    <!-- 预加载字体，提升性能 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+
+    <!-- 🪩 PWA / manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- 🩷 Font + Fallback -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      /* 加载时的初始样式，防止闪烁 */
-      #root {
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      body {
+        margin: 0;
+        font-family: "Noto Sans SC", system-ui, sans-serif;
+        background: linear-gradient(180deg, #fff7f9 0%, #fff 100%);
       }
-      
-      /* 加载动画 */
       .loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
         height: 100vh;
-        color: white;
-        font-size: 18px;
-      }
-      
-      .spinner {
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top: 3px solid white;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-        margin-right: 15px;
-      }
-      
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ff6699;
+        font-size: 1.2rem;
       }
     </style>
   </head>
-  <body>
-    <noscript>
-      <div style="text-align: center; padding: 50px; color: white;">
-        <h1>需要启用JavaScript</h1>
-        <p>这个应用需要JavaScript支持才能正常运行。</p>
-      </div>
-    </noscript>
-    
-    <!-- 加载中的占位符 -->
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      加载中...
-    </div>
-    
-    <!-- React应用挂载点 -->
-    <div id="root"></div>
 
-    <script>
-      // 应用加载完成后隐藏加载动画
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          const loadingElement = document.getElementById('loading');
-          if (loadingElement) {
-            loadingElement.style.display = 'none';
-          }
-        }, 500);
-      });
-    </script>
+  <body>
+    <noscript>请启用 JavaScript 以获得完整体验。</noscript>
+    <div id="root">
+      <div class="loading">🌞 正在加载心灵能量...</div>
+    </div>
   </body>
 </html>

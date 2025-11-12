@@ -43,3 +43,4 @@ Thumbs.db
 *.xlsx
 *.bak
 *.tmp
+.vercel
