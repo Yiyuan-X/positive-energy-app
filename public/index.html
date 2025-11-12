@@ -17,40 +17,71 @@
       property="og:description"
       content="每日一句积极语录 ✨ 与爱同行的成长旅程。"
     />
-    <meta property="og:image" content="/favicon.svg" />
+    <meta property="og:image" content="./favicon.svg" />
     <meta property="og:type" content="website" />
 
     <!-- 🪩 PWA / manifest -->
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./favicon.svg" />
 
-    <!-- 🩷 Font + Fallback -->
+    <!-- 🩷 字体与初始加载样式 -->
     <link
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600&display=swap"
       rel="stylesheet"
     />
+
     <style>
+      html,
       body {
         margin: 0;
+        height: 100%;
         font-family: "Noto Sans SC", system-ui, sans-serif;
         background: linear-gradient(180deg, #fff7f9 0%, #fff 100%);
+        overflow: hidden;
       }
-      .loading {
-        height: 100vh;
+
+      .loading-screen {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        height: 100vh;
         color: #ff6699;
         font-size: 1.2rem;
+        letter-spacing: 1px;
+      }
+
+      .loading-spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid #ffd6e7;
+        border-top-color: #ff6699;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 16px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
     </style>
   </head>
 
   <body>
     <noscript>请启用 JavaScript 以获得完整体验。</noscript>
+
+    <!-- React 入口 -->
     <div id="root">
-      <div class="loading">🌞 正在加载心灵能量...</div>
+      <!-- 🌞 初始加载动画（React 加载前可见） -->
+      <div class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>🌞 正在加载心灵能量...</p>
+      </div>
     </div>
+
+    <!-- React 会自动替换上面的内容 -->
   </body>
 </html>
